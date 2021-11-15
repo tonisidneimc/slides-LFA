@@ -1,0 +1,130 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{12}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+%
+\usepackage{amsmath,amssymb,amsthm}
+%
+\newcommand{\deriv}[1]{\stackrel{\scriptscriptstyle #1}{\Longrightarrow}}
+%
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \item \textcolor{blue}{Suponha que $L$ é a linguagem escolhida na atividade avaliativa AA-10 e $G$ é a gramática proposta na atividade AA-11 para gerar $L$.  Nesta tarefa deve ser provado que a linguagem $\mathcal{L}(G)$, linguagem gerada pela gramática $G$, é igual à linguagem $L$, ou seja, $\mathcal{L}(G)=L$. Caso a gramática $G$ proposta na atividade AA-11 tenha sido avaliada como incorreta, use uma versão corrigida da mesma.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{red}{$\mathcal{L}_{\myling} = \{a^nb^{2m+1}c^{2m+1}a^{2n} \mid n,m \geqslant 0\}$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Gramática $G_{\myling}$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ $G_{\myling}=(V,\Sigma,P,S)=(\{S,A,B\},\{a,b,c\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S\to aSaa\mid A\\
+    A\to bbAcc\mid B\\
+    B\to bc
+   \end{array}\right\}.
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ \item \textcolor{blue}{
+ Para provar que $\mathcal{L}(G)=\mathcal{L}_{\myling}$, deve-se demonstrar que:
+    \begin{enumerate}[label=\alph*)]
+     \item $\mathcal{L}_{\myling} \subseteq\mathcal{L}(G_{99})$, ou seja, se $w\in \mathcal{L}_{\myling}$, então $S \deriv{*} w$. 
+     \item $\mathcal{L}(G_{99})\subseteq \mathcal{L}_{\myling}$, ou seja, se $S \deriv{*} w$, então $w = a^nb^{2m+1}c^{2m+1}a^{2n},\> n,m \geqslant 0$.
+    \end{enumerate}
+ }
+\end{itemize}
+
+\begin{itemize}[leftmargin=3.7cm]
+ \item [$\mathcal{L}_{\myling} \subseteq\mathcal{L}(G_{99})$:] \textcolor{red}{Qualquer cadeia de $\mathcal{L}_{\myling}$ pode ser obtida a partir de $G_{99}$ a partir do seguinte esquema de derivação:
+		\begin{alignat*}{2}
+%		\cline{1-4}
+		 & \text{Derivação} & \qquad\qquad& \text{Regra usada}\\[-8pt]
+		\cline{1-4}
+		 S \deriv{n}\>& a^nS(aa)^n                & S &\to aSaa\\ 
+		   \deriv{}\> & a^nA(aa)^n                & S &\to A \\
+	       \deriv{m}\>& a^n(bb)^mA(cc)^m(aa)^n    & A &\to bbAcc \\ 
+	       \deriv{}\> & a^n(bb)^mB(cc)^m(aa)^n    & A &\to B \\ 
+           \deriv{}\> & a^n(bb)^mbc(cc)^m(aa)^n   & B &\to bc \\ 
+		        =\>\> & a^nb^{2m+1}c^{2m+1}a^{2n} &  \\[-8pt]
+		\cline{1-4}
+		 S \deriv{n}\>& A                          &S &\to A \\
+	       \deriv{m}\>& (bb)^mA(cc)^m    & A &\to bbAcc \\ 
+	       \deriv{}\> & (bb)^mB(cc)^m    & A &\to B \\ 
+           \deriv{}\> & (bb)^mbc(cc)^m   & B &\to bc \\ 
+		        =\>\> & b^{2m+1}c^{2m+1} &  \\[-8pt]
+		\cline{1-4}
+		\end{alignat*}
+  Portanto, $S \deriv{*}a^nb^{2m+1}c^{2m+1}a^{2n},\> n,m \geqslant 0$.
+}
+
+ \item [$\mathcal{L}(G_{99})\subseteq \mathcal{L}_{\myling}$:]  \textcolor{red}{Sejam $n_x(u)$ o número de ocorrências do símbolo $x$ na cadeia $u$, $n_{xp}(u)$ o número de ocorrências do símbolo $x$ como prefixo de $u$ e $n_{xs}(u)$ o número de ocorrências do símbolo $x$ como sufixo de $u$.}
+
+ \textcolor{red}{As relações seguintes são válidas para qualquer forma sentencial $u$ gerada por $G_{99}$:
+\begin{enumerate}[label=(\roman*),ref=(\roman*)]
+	\item \label{r1} $2\cdot n_{ap}(u) = n_{as}(u)$;
+	\item \label{r2} se $u=x_1Cx_2$, em que $C \in V$ temos $n_b(u)=n_c(u)= 2m, \ m \in \mathbb{N}$ (ou seja, quantidade par se $u$ é uma forma sentencial, mas não é uma sentença);
+	\item \label{r3} os $a$'s aparecem somente como prefixo e sufixo e todos os $b$'s precedem todos os $c$'s; e
+	\item \label{r4} em uma cadeia (sentença) $u$, $n_b(u)=n_c(u)= 2m+1, \ m \in \mathbb{N}$ (ou seja, se temos uma cadeia de símbolos terminais, a quantidade de $b$'s é igual à de $c$'s e é ímpar.)
+\end{enumerate}}
+
+ \textcolor{red}{Queremos provar que estas relações são válidas para qualquer cadeia derivável a partir de $S$. A prova será por indução no número de derivações:
+\begin{description}
+	\item[Base:] As relações são válidas para todas as cadeias que podem ser obtidas a partir de $S$ com a aplicação de apenas uma regra de derivação: 
+	$$S \deriv{} aSaa\text{ ou }S \deriv{} A.$$	
+	\item[Hipótese de Indução:] As relações são válidas para todas as cadeias que podem ser obtidas a partir de $S$ com a aplicação de até $k$ regras de derivação.
+	\item[Passo indutivo:] Seja $w$ uma cadeia derivável a partir de $S$ em $k+1$ passos de derivação, ou seja, $S \deriv{k+1}w$. Essa derivação pode ser escrita como $S \deriv{k}u \deriv{}w$. Pela hipótese indutiva, as relações são válidas para as formas sentenciais a partir de $S$ com a aplicação de até $k$ regras de derivação, ou seja, são válidas para $u$. Queremos mostrar que a aplicação de mais uma regra não muda as relações descritas. A tabela abaixo mostra o efeito da aplicação de mais uma regra de derivação à forma sentencial $u$:
+		$$
+		\begin{array}{lllll}
+		 \textbf{Regra}           & n_{ap}(w)   & n_{as}(w)   & n_b(w) & n_c(w) \\ 
+		\hline
+		S \to aSaa  & n_{ap}(u)+1 & n_{as}(u)+2 & n_b(u)   & n_c(u) \\ 
+		S \to A     & n_{ap}(u)   & n_{as}(u)   & n_b(u)   & n_c(u) \\ 
+		A \to bbAcc & n_{ap}(u)   & n_{as}(u)   & n_b(u)+2 & n_c(u)+2 \\ 
+		A \to B     & n_{ap}(u)   & n_{as}(u)   & n_b(u)   & n_c(u) \\ 
+		B \to bc    & n_{ap}(u)   & n_{as}(u)   & n_b(u)+1 & n_c(u)+1 \\  
+		\hline 
+		\end{array} 
+		$$
+%	\bigskip
+	Pela análise da tabela acima, observamos que as relações \ref{r1}--\ref{r4} são mantidas para a cadeia $w$. Para a condição \ref{r4}, observamos que a regra $B \to bc$ somente será aplicada uma vez para qualquer cadeia derivável a partir de $S$, sendo que sua aplicação deve ser a última para a obtenção de qualquer cadeia de símbolos terminais.
+ \end{description}
+	}
+\end{itemize}
+%}
+%
+%
+\noindent\textbf{Obs.:} Esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

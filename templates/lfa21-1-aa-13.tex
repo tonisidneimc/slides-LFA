@@ -1,0 +1,131 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{13}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+%
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+%
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+%
+\newcommand{\deriv}[1]{\stackrel{\scriptscriptstyle #1}{\Longrightarrow}}
+%
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \item \textcolor{blue}{Suponha que $G$ é a gramática usada na atividade avaliativa AA-12. Note-se que $G$ é igual à gramática proposta na AA-11 ou é uma versão corrigida da mesma. Nesta tarefa verifique se $G$ é ambígua. Em caso afirmativo,
+ \begin{enumerate}
+  \item mostre duas derivações à esquerda em $G$ para uma mesma cadeia, e
+  \item proponha uma gramática equivalente $G'$ que não seja ambígua. 
+ \end{enumerate} 
+ Caso $G$ não seja ambígua, então:
+ \begin{enumerate}
+  \item proponha uma gramática equivalente $G''$ que seja ambígua e
+  \item mostre duas derivações à esquerda em $G''$ para uma mesma cadeia.
+  \end{enumerate}
+ }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{red}{$\mathcal{L}_{\myling} = \{w\in\{(,)\}^*\mid\text{os símbolos `(' e `)' em $w$ estão balanceados} \}$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Gramática $G_{\myling}$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ 
+  $G_{\myling}=(V,\Sigma,P,S)=(\{S\},\{(,)\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to (S) \mid SS \mid \varepsilon
+   \end{array}\right\}.
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{A gramática $G_{\myling}$ é ambígua, pois existem duas derivações à esquerda ( árvores de derivações) distintas para a cadeia ``(())'':
+  \begin{align*}
+   S &\Rightarrow (S) \Rightarrow (SS) \Rightarrow ((S)S) \Rightarrow ((\varepsilon)S) \Rightarrow (()\varepsilon) \equiv (())\shortintertext{e}
+   S &\Rightarrow (S) \Rightarrow (SS) \Rightarrow (\varepsilon S) \Rightarrow ((S)) \Rightarrow  ((\varepsilon)) \equiv (()).
+  \end{align*}
+  \begin{center}
+   \begin{tikzpicture}[
+    ->,>=stealth',
+    level distance=1.5cm,
+    level 2/.style={sibling distance=2.0cm},
+    level 3/.style={sibling distance=1cm},
+    scale=.7
+   ]
+    \node (t1) {$S$}
+      child { node {(} }
+      child { node {$S$}
+        child { node {$S$}
+          child { node {(} }
+          child { node {$S$} 
+            child { node {$\varepsilon$}}}
+          child { node {)} } }
+        child { node {$S$}
+          child { node {$\varepsilon$}}}}
+      child { node {)} };
+%      
+    \node[xshift=4cm] (t2) {$S$}
+      child { node {(} }
+      child { node {$S$}
+        child { node {$S$}
+          child { node {$\varepsilon$}}}
+        child { node {$S$}
+          child { node {(} }
+          child { node {$S$} 
+            child { node {$\varepsilon$}}}
+          child { node {)} } }}
+      child { node {)} };
+   \end{tikzpicture}
+  \end{center}
+  }
+  \item \textcolor{red}{A regra de derivação $S\to \varepsilon$  e a regra recursiva $S\to SS$ da gramática $G_{\myling}$ permitem gerar qualquer quantidade da variável $S$, as quais combinadas com a regra recursiva $S\to (S)$ permitem que diferentes derivações à esquerda sejam construídas para uma mesma cadeia!
+  }
+  \item \textcolor{red}{A introdução de uma variável $A$ extra elimina uma das recursões diretas na variável $S$ e remove a ambiguidade da gramáticas, ou seja, $S\to \varepsilon \mid AS$ e $A\to (S)$. Note-se que essas regras podem ser simplificadas com a remoção da variável $A$!
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Gramática $G^2_{\myling}$ não ambígua que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ $G_{\myling}=(V,\Sigma,P,S)=(\{S\},\{(,)\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to (S)S \mid \varepsilon
+   \end{array}\right\}.
+  $$
+  }
+\end{itemize}
+%}
+%
+%
+\noindent\textbf{Obs.:} Esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

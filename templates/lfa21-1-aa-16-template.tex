@@ -1,0 +1,126 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{16}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+%
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+%
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+%
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,shapes}
+\tikzset{
+ node distance=3cm,
+ initial text={$P_{\myling}$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small}
+}
+%
+\newcommand{\deriv}[1]{\stackrel{\scriptscriptstyle #1}{\Longrightarrow}}
+%
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+ \begin{itemize}
+% 
+  \item Nesta tarefa deve ser proposto um PDA que reconheça as cadeias da linguagem $\mathcal{L}$ selecionada na atividade AA-10.
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{red}{$\mathcal{L}_{\myling} = \{a^nb^{2m+1}c^{2m+1}a^{2n} \mid n,m \geqslant 0\}$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{PDA $P_{\myling}$ que reconhece as cadeias da linguagem $\mathcal{L}_{\myling}$:}
+  \end{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\begin{center}
+\begin{tikzpicture}[
+  accept/.style={accepting,fill=green!20!white},
+  reject/.style={accepting,fill=red!20!white},
+  slopea/.style={sloped,anchor=center,above},
+  slopeb/.style={sloped,anchor=center,below},
+  transform shape,
+%  scale=0.95
+ ]
+  \def\e{\varepsilon}
+  \node[initial,state]           (s0) {$s_0$};
+  \node[state,right of=s0]              (s1) {$s_1$};
+  \node[state,below of=s1]              (s2) {$s_2$};
+  \node[state,right of=s1]              (s3) {$s_3$};
+  \node[state,below of=s3]              (s4) {$s_4$};
+  \node[state,right of=s3]              (s5) {$s_5$};
+  \node[state,below of=s5]              (s6) {$s_6$};
+  \node[state,right of=s5]              (s7) {$s_7$};
+  \node[state,accept,right of=s7]       (sa) {$s_a$};
+  \node[state,reject,below of=s4]       (sr) {$s_r$};
+
+  \path (s0) edge node {$\e,\e\to \$$}                (s1)
+        (s1) edge [bend right=20,left]
+                  node [slopeb] {$a,\e\to a$}         (s2)
+             edge node {$b,\e\to b$}                  (s3)
+             edge [out=50,in=100,looseness=0.6]
+                  node [slopea,pos=.3] {$\e,\$\to\e$} (sa)
+             edge [out=220,in=150,looseness=1.2]
+                  node [slopeb,pos=.8] {$c,\e\to\e$}  (sr)
+        (s2) edge [bend right=20,right]
+                  node [slopeb] {$\e,\e\to a$}        (s1)
+        (s3) edge [bend right=20,left]
+                  node [slopeb] {$b,\e\to b$}         (s4)
+             edge node {$c,b\to \e$}                  (s5)
+             edge [out=210,in=120,looseness=0.9]
+                  node [slopeb,pos=.7] {$a,\e\to\e$}  (sr)
+        (s4) edge [bend right=20,left]
+                  node [slopeb] {$b,\e\to b$}         (s3)
+             edge node[slopea,align=left] {$a,\e\to\e$\\[-2pt] $c,\e\to\e$} (sr)
+        (s5) edge [bend right=20,left]
+                  node [slopeb] {$c,b\to \e$}         (s6)
+             edge node {$a,a\to \e$}                  (s7)
+             edge [out=40,in=140,looseness=1.1]
+                  node [slopea,pos=.2] {$\e,\$\to\e$} (sa)
+             edge [out=335,in=0,looseness=1.1]
+                  node [slopeb,pos=.4] {$b,\e\to\e$}  (sr)
+        (s6) edge [bend right=20,left]
+                  node [slopeb] {$c,b\to\e$}          (s5)
+             edge [bend left=20]
+                  node[slopea,pos=.3,align=left] {$a,\e\to\e$\\[-2pt] $b,\e\to \e$}  (sr)
+        (s7) edge [loop above]
+                  node {$a,a\to\e$}                   (s7)
+             edge node {$\e,\$\to\e$}                 (sa)
+             edge [out=260,in=340,looseness=0.9]
+                  node[slopeb,align=left] {$b,\e\to\e$\\[-2pt] $c,\e\to\e$} (sr);
+\end{tikzpicture}
+\end{center}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+%
+\noindent\textbf{Obs.:} Esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

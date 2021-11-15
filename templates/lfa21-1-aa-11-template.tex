@@ -1,0 +1,60 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{11}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb,amsthm}
+\newtheorem{lema}{Lema}
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{blue}{Nesta tarefa deve ser proposta uma gramática livre de contexto $G$ que gere a linguagem $\mathcal{L}$ escolhida na atividade AA-10, ou seja, $L(G)=\mathcal{L}$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{red}{$\mathcal{L}_{\myling} = \{w\in\{0,1\}^*\mid w = 0^n10^n,\ n \geqslant 0\}$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Gramática $G_{\myling}$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ $G_{\myling}=(V,\Sigma,P,S)=(\{S,A\},\{0,1\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to 0S0 \mid A\\
+    A \to 1
+   \end{array}\right\}.
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+\end{itemize}
+%
+%
+\noindent\textbf{Obs.:} Esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

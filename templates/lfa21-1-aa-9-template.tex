@@ -1,0 +1,263 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{9}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+
+% -------------------------------------------------- TikZ
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning}
+\tikzset{
+ node distance=2.5cm,
+ initial text={$M_\myling$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small}
+}
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item A partir do autômato finito não determinístico (NFA) proposto na AA-6, use o algoritmo baseado em GNFA's para extrair uma expressão regular que gere as cadeias da linguagem reconhecida pelo NFA. Caso o NFA proposto na AA-6 tenha sido avaliado como incorreto, use uma versão corrigida do mesmo. 
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{blue}{$\mathcal{L}_\myling = \{w\mid w=0u1$ ou $w=1u0$, com $u\in\Sigma^*\}$.}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{Autômato finito não determinístico que reconhece as cadeias $\mathcal{L}_\myling$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$N_\myling$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                             (s0) {$s_0$};
+    \node[state,above right=1cm of s0]                               (s1) {$s_1$};
+    \node[state,right of=s1]                                         (s2) {$s_2$};
+    \node[state,right of=s2]                                         (s3) {$s_3$};
+    \node[state,right of=s3]                                         (s4) {$s_4$};
+    \node[state,below right=1cm of s0]                               (s5) {$s_5$};
+    \node[state,right of=s5]                                         (s6) {$s_6$};
+    \node[state,right of=s6]                                         (s7) {$s_7$};
+    \node[state,right of=s7]                                         (s8) {$s_8$};
+    \node[state,above right=1cm of s8,accepting,fill=green!20!white] (s9) {$s_9$};
+  %
+    \draw (s0) edge [bend left=45]              node {$\varepsilon$}     (s1)
+               edge [bend right=45, below left] node {$\varepsilon$}     (s5)
+          (s1) edge                             node {$0$}               (s2)
+          (s2) edge [bend left=20]              node {$\varepsilon,0,1$} (s3)
+          (s3) edge [bend left=20]              node {$\varepsilon$}     (s2)
+               edge                             node {$1$}               (s4)
+          (s4) edge [bend left=45]              node {$\varepsilon$}     (s9)
+          (s5) edge [below]                     node {$1$}               (s6)
+          (s6) edge [bend left=20]              node {$\varepsilon,0,1$} (s7)
+          (s7) edge [bend left=20]              node {$\varepsilon$}     (s6)
+               edge [below]                     node {$0$}               (s8)
+          (s8) edge [bend right=45,below right] node {$\varepsilon$}     (s9);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{GNFA $G_0$ obtido a partir do NFA $N_\myling$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$G_0$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                             (si) {$I$};
+    \node[state,right of=si]                                         (s0) {$s_0$};
+    \node[state,above right=1cm of s0]                               (s1) {$s_1$};
+    \node[state,right of=s1]                                         (s2) {$s_2$};
+    \node[state,right of=s2]                                         (s3) {$s_3$};
+    \node[state,right of=s3]                                         (s4) {$s_4$};
+    \node[state,below right=1cm of s0]                               (s5) {$s_5$};
+    \node[state,right of=s5]                                         (s6) {$s_6$};
+    \node[state,right of=s6]                                         (s7) {$s_7$};
+    \node[state,right of=s7]                                         (s8) {$s_8$};
+    \node[state,above right=1cm of s8]                               (s9) {$s_9$};
+    \node[state,right of=s9,accepting,fill=green!20!white] (sf) {$F$};
+  %
+    \draw (si) edge                             node {$\varepsilon$}     (s0)
+          (s0) edge [bend left=45]              node {$\varepsilon$}     (s1)
+               edge [bend right=45, below left] node {$\varepsilon$}     (s5)
+          (s1) edge                             node {$0$}               (s2)
+          (s2) edge [bend left=20]              node {$\varepsilon,0,1$} (s3)
+          (s3) edge [bend left=20]              node {$\varepsilon$}     (s2)
+               edge                             node {$1$}               (s4)
+          (s4) edge [bend left=45]              node {$\varepsilon$}     (s9)
+          (s5) edge [below]                     node {$1$}               (s6)
+          (s6) edge [bend left=20]              node {$\varepsilon,0,1$} (s7)
+          (s7) edge [bend left=20]              node {$\varepsilon$}     (s6)
+               edge [below]                     node {$0$}               (s8)
+          (s8) edge [bend right=45,below right] node {$\varepsilon$}     (s9)
+          (s9) edge                             node {$\varepsilon$}     (sf);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{GNFA $G_4$ obtido a partir do GNFA $G_0$ após a remoção dos estados $s_1$, $s_4$, $s_5$ e $s_8$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$G_4$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                   (si) {$I$};
+    \node[state,right of=si]                               (s0) {$s_0$};
+    \node[state,above right=1.cm of s0,xshift=2.5cm]       (s2) {$s_2$};
+    \node[state,right of=s2]                               (s3) {$s_3$};
+    \node[state,below right=1cm of s0,xshift=2.5cm]        (s6) {$s_6$};
+    \node[state,right of=s6]                               (s7) {$s_7$};
+    \node[state,above right=1cm of s7,xshift=2.5cm]        (s9) {$s_9$};
+    \node[state,right of=s9,accepting,fill=green!20!white] (sf) {$F$};
+  %
+    \draw (si) edge                             node {$\varepsilon$}     (s0)
+          (s0) edge [bend left=20]              node {$0$}               (s2)
+               edge [bend right=20, below left] node {$1$}               (s6)
+          (s2) edge [bend left=20]              node {$\varepsilon,0,1$} (s3)
+          (s3) edge [bend left=20]              node {$\varepsilon$}     (s2)
+               edge [bend left=20]              node {$1$}               (s9)
+          (s6) edge [bend left=20]              node {$\varepsilon,0,1$} (s7)
+          (s7) edge [bend left=20]              node {$\varepsilon$}     (s6)
+               edge [bend right=20,below right] node {$0$}               (s9)
+          (s9) edge                             node {$\varepsilon$}     (sf);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{GNFA $G_6$ obtido a partir do GNFA $G_4$ após a remoção dos estados $s_0$ e $s_9$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$G_6$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                   (si) {$I$};
+    \node[state,above right=1.cm of si,xshift=5.0cm]       (s2) {$s_2$};
+    \node[state,right of=s2]                               (s3) {$s_3$};
+    \node[state,below right=1cm of s0,xshift=2.5cm]        (s6) {$s_6$};
+    \node[state,right of=s6]                               (s7) {$s_7$};
+    \node[state,above right=1cm of s7,,xshift=5.0cm,accepting,fill=green!20!white] (sf) {$F$};
+  %
+    \draw (si) edge [bend left=15]              node {$0$}               (s2)
+               edge [bend right=15, below left] node {$1$}               (s6)
+          (s2) edge [bend left=20]              node {$\varepsilon,0,1$} (s3)
+          (s3) edge [bend left=20]              node {$\varepsilon$}     (s2)
+               edge [bend left=15]              node {$1$}               (sf)
+          (s6) edge [bend left=20]              node {$\varepsilon,0,1$} (s7)
+          (s7) edge [bend left=20]              node {$\varepsilon$}     (s6)
+               edge [bend right=15,below right] node {$0$}               (sf);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{GNFA $G_8$ obtido a partir do GNFA $G_6$ após a remoção dos estados $s_2$ e $s_6$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$G_8$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                   (si) {$I$};
+    \node[state,above right=1.cm of si,xshift=7.5cm]       (s3) {$s_3$};
+    \node[state,below right=1cm of si,xshift=7.5cm]        (s7) {$s_7$};
+    \node[state,above right=1cm of s7,xshift=5.0cm,accepting,fill=green!20!white] (sf) {$F$};
+  %
+    \draw (si) edge [bend left=10,sloped]
+                    node {$0(\varepsilon \cup 0 \cup 1)$} (s3)
+               edge [bend right=10,below,sloped]
+                    node {$1(\varepsilon \cup 0 \cup 1)$} (s7)
+          (s3) edge [loop above]
+                    node {$\varepsilon \cup 0 \cup 1$}    (s3)
+               edge [bend left=10]
+                    node {$1$}                            (sf)
+          (s7) edge [loop below]
+                    node {$\varepsilon \cup 0 \cup 1$}    (s7)
+               edge [bend right=10,below right]
+                    node {$0$}                            (sf);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{GNFA $G_9$ obtido a partir do GNFA $G_8$ após a remoção do estado $s_3$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$G_9$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                                          (si) {$I$};
+    \node[state,below right=1cm of si,xshift=7.5cm]                               (s7) {$s_7$};
+    \node[state,above right=1cm of s7,xshift=5.0cm,accepting,fill=green!20!white] (sf) {$F$};
+  %
+    \draw (si) edge [bend left=10]              
+                    node {$0(\varepsilon \cup 0 \cup 1)(\varepsilon \cup 0 \cup 1)^*1$} (sf)
+               edge [bend right=10,below,sloped]
+                    node {$1(\varepsilon \cup 0 \cup 1)$}                               (s7)
+          (s7) edge [loop below]
+                    node {$\varepsilon \cup 0 \cup 1$}                                  (s7)
+               edge [bend right=10,below right]
+                    node {$0$}                                                          (sf);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{GNFA $G_{10}$ obtido a partir do GNFA $G_9$ após a remoção do estado $s_7$:}
+\begin{center}
+ \begin{tikzpicture}
+  [
+   initial text={$G_{10}$},
+%    node distance=2.cm,
+%    transform shape,
+%    scale=1.3
+  ]
+    \node[state,initial]                                          (si) {$I$};
+    \node[state,right=14.0cm of si,accepting,fill=green!20!white] (sf) {$F$};
+  %
+    \draw (si) edge [bend left=10]              
+                    node {$0(\varepsilon \cup 0 \cup 1)(\varepsilon \cup 0 \cup 1)^*1$} (sf)
+               edge [bend right=10,below]
+                    node {$1(\varepsilon \cup 0 \cup 1)(\varepsilon \cup 0 \cup 1)^*0$} (sf);
+   \end{tikzpicture}
+\end{center}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item \textcolor{red}{Expressão regular obtida com o GNFA $G_{10}$:}
+  $$\mathcal{R}_\myling =0(\varepsilon \cup 0 \cup 1)(\varepsilon \cup 0 \cup 1)^*1 \cup 1(\varepsilon \cup 0 \cup 1)(\varepsilon \cup 0 \cup 1)^*0.$$
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ \end{itemize}
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+\noindent\textbf{Obs.:} esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

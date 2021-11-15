@@ -1,0 +1,106 @@
+\documentclass[12pt]{article}
+
+% --------------------------------------------------
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{6}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+% --------------------------------------------------
+
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.0cm,bottom=1.0cm,left=2.0cm,right=1.5cm,nohead,nofoot]{geometry}
+
+\usepackage{amssymb}
+
+
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,shapes}
+\tikzset{
+ node distance=2.0cm,
+ initial text={$N_{\myling}$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small},
+ accept/.style={accepting,fill=green!20!white},
+ reject/.style={accepting,fill=red!20!white},
+}
+
+
+\begin{document}
+\pagestyle{empty}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item [1)] A partir da expressão regular $\mathcal{R}$ proposta na AA-3 construa um \textbf{autômato finito não-determinístico} (NFA ou NFA-$\varepsilon$) que reconheça $\mathcal{L}(\mathcal{R})$. \textbf{Obs.:} Caso a expressão regular proposta na AA-3 tenha sido avaliada como incorreta, use uma versão corrigida da mesma.
+  \item [2)] Converta o NFA/NFA-$\varepsilon$ obtido para um autômato finito determinístico (apresente os principais elementos dessa conversão).
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{blue}{$\mathcal{R}_{\myling} = 0^*\cup 0(10)^*$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Autômato finito não determinístico que reconhece as cadeias da linguagem $\mathcal{L}(\mathcal{R}_{\myling})$:}\\
+   \begin{tikzpicture}[
+%    transform shape,
+%    scale=1.2
+   ]
+    \node[state,initial]                  (s0) {$s_0$};
+    \node[state,above right of=s0]        (s1) {$s_1$};
+    \node[state,below right of=s0,accept] (s2) {$s_2$};
+    \node[state,right of=s1,accept]       (s3) {$s_3$};
+
+    \draw (s0) edge [bend left=45]             node {$\varepsilon$} (s1)
+               edge [bend right=45,below left] node {$\varepsilon$} (s2)
+          (s1) edge [bend left=20]             node {$0$}           (s3)
+          (s2) edge [loop above]               node {$0$}           (s2)
+          (s3) edge [bend left=20]             node {$1$}           (s1);
+  \end{tikzpicture}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \item \textcolor{red}{Fecho-$\varepsilon$ do estado $s_0$:} $$\mathcal{F}_\varepsilon(s_0) = \{s_0,s_1,s_2\}.$$
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ \item \textcolor{red}{Tabela da função $\tau$ de transições:}
+ $$
+  \begin{array}{c|cc}
+   \tau & 0           & 1\\
+   \hline
+   s_0  & \{s_2,s_3\} & \varnothing\\
+   s_1  & \{s_3\}     & \varnothing\\
+   s_2  & \{s_2\}     & \varnothing\\
+   s_3  & \varnothing & \{s_1\}\\
+  \end{array}
+ $$
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{red}{Autômato finito determinístico que reconhece as cadeias da linguagem $\mathcal{L}(\mathcal{R}_{\myling})$:}\\
+   \begin{tikzpicture}[
+     node distance=3.0cm,
+     initial text={$M_{\myling}$}
+%    transform shape,
+%    scale=1.2
+   ]
+    \node[state,initial,accept,ellipse]                  (s012) {$\{s_0,s_1,s_2\}$};
+    \node[state,right of=s012,accept,ellipse]            (s23)  {$\{s_2,s_3\}$};
+    \node[state,right of=s23,ellipse]                    (s1)   {$\{s_1\}$};
+    \node[state,right of=s1,accept,ellipse]              (s3)   {$\{s_3\}$};
+    \node[state,below of=s23,accept,ellipse,yshift=1cm]  (s2)   {$\{s_2\}$};
+    \node[state,below of=s2,reject,ellipse,yshift=1cm]   (sr)   {$\varnothing$};
+
+    \draw (s012) edge                            node {$0$}   (s23)
+                 edge [bend right=45,below left] node {$1$}   (sr)
+          (s23)  edge                node {$0$}   (s2)
+                 edge                node {$1$}   (s1)
+          (s1)   edge [bend left=20] node {$0$}   (s3)
+                 edge [bend left=20] node {$1$}   (sr)
+          (s3)   edge [bend left=40] node {$0$}   (sr)
+                 edge [bend left=20] node {$1$}   (s1)
+          (s2)   edge [loop left]    node {$0$}   (s2)
+                 edge                node {$1$}   (sr)
+          (sr)   edge [loop below]   node {$0,1$} (sr);
+  \end{tikzpicture}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+\end{itemize}
+%
+
+\noindent\textbf{Obs.:} esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

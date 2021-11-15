@@ -1,0 +1,182 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{8}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+
+% -------------------------------------------------- TikZ
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning}
+\tikzset{
+ node distance=2.5cm,
+ initial text={$M_\myling$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small}
+}
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+%
+ \begin{itemize}
+  \item A partir de cada uma das gramáticas obtidas na AA-7, use o algoritmo baseado em sistemas de equações para extrair expressões regulares que gerem as mesmas cadeias geradas pelas gramáticas.
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item \textcolor{blue}{$\mathcal{L}_\myling = \{w\mid w=0u1$ ou $w=1u0$, com $u\in\Sigma^*\}$.}
+  
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item  \textcolor{red}{Gramática $G_1$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ $G_1=(V,\Sigma,P,S)=(\{A,B,C,D,S\},\{0,1\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to 0A \mid 1C,\\
+    A \to 0A \mid 1B,\\
+    B \to 0A \mid 1B \mid \varepsilon,\\
+    C \to 0D \mid 1C,\\
+    D \to 0D \mid 1C \mid \varepsilon
+   \end{array}\right\}.
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Extração de expressão regular $\mathcal{R}_1$ da gramática $G$, tal que $\mathcal{L}(\mathcal{R}_1)=\mathcal{L}(G_1)$:\\
+  $$
+  \begin{array}{ccll}
+  \hline
+  \textbf{Etapa} & \textbf{Item} & \textbf{Expressão} & \textbf{Ação}\\
+  \hline
+    I & 1 & S = 0A \cup 1C &\\
+      & 2 & A = 0A \cup 1B &\\
+      & 3 & B = 0A \cup 1B \cup \varepsilon&\\
+      & 4 & C = 0D \cup 1C &\\
+      & 5 & D = 0D \cup 1C \cup \varepsilon&\\
+  \hline
+   II & 1 & S = 0A \cup 1C &\\
+      & 2 & A = 0^*1B      & I.2 \rightarrow \texttt{Lema de Arden}\\
+      & 3 & B = 0A \cup 1B \cup \varepsilon&\\
+      & 4 & C = 1^*0D      & I.4 \rightarrow \texttt{Lema de Arden}\\
+      & 5 & D = 0D \cup 1C \cup \varepsilon&\\
+  \hline
+  III & 1 & S = 0^+1B \cup 1^+0D & II.2, II.2 \rightarrow II.1\\
+      & 3 & B = 0^+1B \cup 1B \cup \varepsilon & II.2 \rightarrow II.3\\
+      & 5 & D = 0D \cup 1^+0D \cup \varepsilon&II.4 \rightarrow II.5\\\\
+  \hline
+   IV & 1 & S = 0^+1B \cup 1^+0D &\\
+      & 3 & B = (0^+1 \cup 1)^* & III.3 \rightarrow \texttt{Lema de Arden}\\
+      & 5 & D = (1^+0 \cup 0)^* & III.5 \rightarrow \texttt{Lema de Arden}\\
+  \hline
+    V & 1 & S = 0^+1(0^+1 \cup 1)^* \cup 1^+0(1^+0 \cup 0)^* & IV.3, IV.5 \rightarrow IV.1\\
+  \hline
+  \end{array}
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{$\mathcal{R}_1= 0^+1(0^+1 \cup 1)^* \cup 1^+0(1^+0 \cup 0)^*$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \newpage
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  \item  \textcolor{red}{Gramática $G_2$ que gera as cadeias da linguagem $\mathcal{L}_{\myling}$:\\ $G_2=(V,\Sigma,P,S)=(\{A,B,C,D,S\},\{0,1\},P,S)$, com
+  $$
+   P =
+   \left\{\begin{array}{l}
+    S \to A \mid E,\\
+    A \to 0B,\\
+    B \to C \mid 0C \mid 1C\\
+    C \to B \mid 1D,\\
+    D \to I\\
+    E \to 1F,\\
+    F \to G \mid 0G \mid 1G\\
+    G \to F \mid 0H,\\
+    H \to I\\
+    I \to \varepsilon
+   \end{array}\right\}.
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{Extração de expressão regular $\mathcal{R}_2$ da gramática $G_2$, tal que $\mathcal{L}(\mathcal{R}_2)=\mathcal{L}(G_2)$:\\
+  $$
+  \begin{array}{ccll}
+  \hline
+  \textbf{Etapa} & \textbf{Item} & \textbf{Expressão} & \textbf{Ação}\\
+  \hline
+    I & 1 & S = A \cup E &\\
+      & 2 & A = 0B &\\
+      & 3 & B = C \cup 0C \cup 1C&\\
+      & 4 & C = B \cup 1D &\\
+      & 5 & D = I&\\
+      & 6 & E = 1F&\\
+      & 7 & F = G \cup 0G \cup 1G&\\
+      & 8 & G = F \cup 0H&\\
+      & 9 & H = I&\\
+      & 10& I = \varepsilon&\\
+  \hline
+   II & 1 & S = A \cup E &\\
+      & 2 & A = 0B &\\
+      & 3 & B = C \cup 0C \cup 1C&\\
+      & 4 & C = B \cup 1 & I.10\rightarrow I.5\rightarrow I.4\\
+      & 6 & E = 1F&\\
+      & 7 & F = G \cup 0G \cup 1G&\\
+      & 8 & G = F \cup 0 & I.10\rightarrow I.9\rightarrow I.8\\
+  \hline
+  III & 1 & S = A \cup E &\\
+      & 2 & A = 0B &\\
+      & 3 & B = B \cup 1 \cup 0B \cup 01 \cup 1B \cup 11 & II.4\rightarrow II.3\\
+      & 6 & E = 1F&\\
+      & 7 & F = F \cup 0 \cup 0F \cup 00 \cup 1F \cup 10& II.8\rightarrow II.7\\
+  \hline
+   IV & 1 & S = A \cup E &\\
+      & 2 & A = 0B &\\
+      & 3 & B = (\varepsilon \cup 0 \cup 1)B \cup (\varepsilon \cup 0 \cup 1)1 & III.3 \rightarrow\texttt{Fatoração.}\\
+      & 6 & E = 1F&\\
+      & 7 & F = (\varepsilon \cup 0 \cup 1)F \cup (\varepsilon \cup 0 \cup 1)0 & III.7 \rightarrow\texttt{Fatoração.}\\
+  \hline
+    V & 1 & S = A \cup E &\\
+      & 2 & A = 0B &\\
+      & 3 & B = (\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)1 & IV.3 \rightarrow\texttt{Lema de Arden.}\\
+      & 6 & E = 1F&\\
+      & 7 & F = (\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)0 & IV.7 \rightarrow\texttt{Lema de Arden.}\\
+  \hline
+   VI & 1 & S = A \cup E &\\
+      & 2 & A = 0(\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)1 & V.3 \rightarrow V.2\\
+      & 6 & E = 1(\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)0& V.7 \rightarrow V.6\\
+  \hline
+  VII & 1 & S = 0(\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)1\ \cup & VI.2, VI.6 \rightarrow VI.1\\
+      &   & \phantom{ A =}\ 1(\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)0\\
+  \hline
+  \end{array}
+  $$
+  }
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  \item  \textcolor{red}{$\mathcal{R}_2 = 0(\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)1 \cup 1(\varepsilon \cup 0 \cup 1)^*(\varepsilon \cup 0 \cup 1)0$.}
+%- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+\end{itemize}
+%
+
+\noindent\textbf{Obs.:} A expressão regular obtida ao final desse procedimento pode variar, a depender da sequência de substituições de variáveis e da aplicação do Lema de Arden. Esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

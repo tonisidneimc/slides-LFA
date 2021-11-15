@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+
+% -------------------------------------------------- Dados do discente
+% Insira os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{18}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+
+% -------------------------------------------------- Babel & Geometry
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=.5cm,bottom=1cm,left=1cm,right=1cm,includeheadfoot,headheight=52.3318pt,footskip=50pt]{geometry}
+%
+\usepackage{xcolor}
+\usepackage{enumitem}
+%
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+%
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\newtheorem{lema}{Lema}
+%
+\usepackage{tikz}
+\usetikzlibrary{automata,arrows,positioning,shapes}
+\tikzset{
+ node distance=3cm,
+ initial text={$P_{\myling}$},
+ double distance=1pt,
+ every state/.style={semithick,fill=blue!20!white,minimum size=20pt,inner sep=0pt},
+ every edge/.style={draw,->,>=stealth,auto,semithick,font=\ttfamily\small}
+}
+%
+\newcommand{\deriv}[1]{\stackrel{\scriptscriptstyle #1}{\Longrightarrow}}
+%
+
+% -------------------------------------------------- Header & Foot
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+
+\rfoot{\rule{\textwidth}{1.pt}\\\thepage\ de \pageref{LastPage}}
+
+\chead{
+ \footnotesize\textbf{Universidade Federal de Goiás -- UFG}\hfill \textsc{Linguagens Formais e Autômatos -- 2021/1}\\
+ \footnotesize\textbf{Instituto de Informática -- INF\hfill Prof. Humberto J. Longo} -- \scriptsize\texttt{longo@inf.ufg.br}\\
+  \rule{\textwidth}{1.pt}
+}
+
+% --------------------------------------------------
+\begin{document}
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+  \item Nesta tarefa deve ser escolhida uma linguagem, dentre aquelas listadas no arquivo ``Lista de linguagens que não são livres de contexto'' (vide Seção ``Coletânea de exercícios''), e demonstrado formalmente (com o auxílio do \emph{Pumping Lemma} para linguagens livres de contexto) que a linguagem escolhida não é livre de contexto.
+%  
+  \item \textcolor{red}{$\mathcal{L}_{\myling} = \{w\in\{0,1,2\}^*\mid w = 0^n1^n2^n,\ n \geqslant 0\}$.}
+%\end{itemize}
+%
+  \textcolor{blue}{
+  \begin{lema}
+  A linguagem $\mathcal{L}_{\myling}$ não é livre de contexto.
+  \end{lema}}
+%
+  \begin{proof}
+  \textcolor{blue}{Suponha que $\mathcal{L}_{\myling}$ seja livre de contexto. O \emph{Pumping Lemma} para linguagens livres de contexto garante a existência de $p\in\mathbb{Z}^+$, tal que qualquer cadeia $w\in \mathcal{L}_{\myling}$, com $|w|\geqslant p$, pode ser subdividida em subcadeias $u$, $v$, $x$, $y$ e $z$ ($w=uvxyz$) satisfazendo $|vxy|\leqslant p$, $|vy|>0$ ($v\neq\varepsilon$ e/ou $y\neq\varepsilon$) e $uv^ixy^iz\in \mathcal{L}_{\myling}$, para $i\geqslant 0$.}
+  
+  \textcolor{red}{Contudo, considere a cadeia $w=uvxyz=0^p1^p2^p\in \mathcal{L}_{\myling}$. Como o \emph{Pumping Lemma} especifica que $|vxy|\leqslant p$, então os três símbolos do alfabeto $\Sigma$ não podem ocorrer ao mesmo tempo em cada uma das subcadeias $v$ e $y$. Assim, se $v$ e $y$ contém, cada um, apenas um dos símbolos de $\Sigma$, então $w'=uv^2xy^2z\notin \mathcal{L}_{\myling}$, pois $w'$ conterá menos 0's do que 1's ou 2's ou menos 2's do que 0's ou 1's. Se $v$ ou $y$ contém mais de um dos símbolos de $\Sigma$, novamente $w'=uv^2xy^2z\notin \mathcal{L}_{\myling}$, pois $w'$ conterá sequências de 0's e 1's intercalados ou de 1's e 2's intercalados.} \textcolor{blue}{Logo, dada a contradição ao \emph{Pumping Lemma}, é falsa a suposição de que $\mathcal{L}_{\myling}$ é livre de contexto. }
+  \end{proof}
+\end{itemize}
+%
+\noindent\textbf{Obs.:} O texto na cor azul é praticamente padrão, no sentido de que contém as informações básicas necessárias, e não deve variar muito ao se considerar outras linguagens. Contudo, essas informações podem ser organizadas de diferentes outras formas. Já o texto em vermelho pode variar bastante, a depender da linguagem que está sendo considerada. Esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+\end{document}

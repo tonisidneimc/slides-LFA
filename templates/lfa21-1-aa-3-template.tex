@@ -1,0 +1,41 @@
+\documentclass[12pt]{article}
+
+% --------------------------------------------------
+% Edite os seus dados e do exercício escolhido:
+\def\discente{Fulano de tal}
+\def\matricula{20010101}
+\def\aa{3}
+\def\myling{{99}} % Informe o número da linguagem selecionada.
+% --------------------------------------------------
+
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,top=1.5cm,bottom=1.5cm,left=2.0cm,right=1.5cm,nohead,nofoot]{geometry}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{enumitem}
+\usepackage{calc}
+\usepackage{xcolor}
+
+\newcommand{\concatL}{\ensuremath{{\scriptstyle\circ}}}
+
+\begin{document}
+% --------------------------------------------------
+\subsection*{Atividade AA-\aa}
+ \paragraph{\matricula -- \discente}
+%
+ \begin{itemize}
+  \item \textcolor{blue}{$\mathcal{L}_\myling = \{w\in\{0,1\}^*\mid w=0u1$ ou $w=1u0$, com $u\in\Sigma^*\}$.}
+%
+  \item  \textcolor{red}{Definição de $\mathcal{L}_\myling$ por conjuntos regulares:
+%
+  \begin{description}[topsep=0pt,noitemsep,labelwidth=\widthof{CR =},labelindent=2.5\labelwidth,leftmargin=*,align=right]
+   \item [ER($\mathcal{L}_\myling$) =] $0(0\cup 1)^*1\cup 1(0\cup 1)^*0$.
+  \end{description}
+  }
+% 
+ \end{itemize}
+%
+\noindent\textbf{Obs.:} esta observação e os comandos de cor (``\verb|\textcolor{}{}|'') podem ser removidos da versão a ser submetida na plataforma Turing.
+% --------------------------------------------------
+\end{document}
